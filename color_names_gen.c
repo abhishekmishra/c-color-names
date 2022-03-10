@@ -333,6 +333,7 @@ int write_color_names_c_program()
             {
                 if (wrote_colors == 0)
                 {
+                    fprintf(c_file, "#define NUM_COLORS\t%zd\n\n", rows);
                     fprintf(c_file, "static const char COLOR_NAMES[%zd][%zd] = {\n", rows, maxlen_colorname + 1);
                     csv_color_names_write(c_file, rows, COLOR_NAMES);
                     fprintf(c_file, "};\n\n");

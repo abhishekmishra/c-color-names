@@ -53,9 +53,12 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #include "color_names.h"
 
 // generated color names begin
+#define NUM_COLORS	3842
+
 static const char COLOR_NAMES[3842][29] = {
 "100 mph",
 "20000 leagues under the sea",
@@ -11593,7 +11596,79 @@ static const char COLOR_RGB_TRIPLE[3842][8][3] = {
 
 // generated color names end
 
-int main(int argc, char* argv[]) 
+int get_color_index(const char *color_name, size_t *index)
 {
-    
+    for (size_t i = 0; i < NUM_COLORS; i++)
+    {
+        if (strcmp(COLOR_NAMES[i], color_name) == 0)
+        {
+            *index = i;
+            return 1;
+        }
+    }
+
+    // not found
+    return 0;
+}
+
+int color_name_exists(const char *color_name)
+{
+    if (color_name != NULL)
+    {
+        size_t idx;
+        return get_color_index(color_name, &idx);
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int color_name_get_rgb_string(const char *color_name, char** color_hex_str)
+{
+    *color_hex_str = NULL;
+    size_t idx;
+    int found = 0;
+
+    if (color_name == NULL)
+    {
+        return 0;
+    }
+
+    found = get_color_index(color_name, &idx);
+
+    if (found == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        *color_hex_str = COLOR_RGB_HEXSTR[idx];
+        return 1;
+    }
+}
+
+int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b)
+{
+    size_t idx;
+    int found = 0;
+
+    if (color_name == NULL)
+    {
+        return 0;
+    }
+
+    found = get_color_index(color_name, &idx);
+
+    if (found == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        *r = COLOR_RGB_TRIPLE[idx][0];
+        *g = COLOR_RGB_TRIPLE[idx][1];
+        *b = COLOR_RGB_TRIPLE[idx][2];
+        return 1;
+    }
 }
