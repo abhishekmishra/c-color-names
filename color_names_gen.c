@@ -24,22 +24,25 @@ SOFTWARE.
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define COLOR_NAMES_DIST_CSV_FILE "color-names/dist/colornames.bestof.csv"
 #define COLOR_NAMES_FILE_HAS_HEADER 1
 #define COLOR_HEX_LEN 7
 
+#define COLOR_NAMES_TEMPLATE_FNAME "color_names.template.c"
+#define COLOR_NAMES_C_FNAME "color_names.c"
+#define COLOR_NAMES_TEMPLATE_MARKER_BEGIN "// generated color names begin"
+#define COLOR_NAMES_TEMPLATE_MARKER_END "// generated color names end"
+#define MAX_TEMPLATE_LINE_LEN 1024
+
 int csv_counts(size_t *rows, size_t *maxlen_colorname);
+int write_color_names_c_program();
 
 int main(int argc, char *argv[])
 {
-    size_t rows, maxlen_colorname;
-
-    // get the row count and max color name length
-    csv_counts(&rows, &maxlen_colorname);
-    printf("Num rows (excluding header) = %zd, longest color name length = %zd.\n", rows, maxlen_colorname);
-
-    
+    int res = write_color_names_c_program();
+    return res;
 }
 
 int csv_counts(size_t *rows, size_t *maxlen_colorname)
@@ -59,7 +62,7 @@ int csv_counts(size_t *rows, size_t *maxlen_colorname)
     }
     else
     {
-        int c;
+        int prev = 0, c = 0;
         while ((c = getc(color_names_file)) != EOF)
         {
             // putchar(c);
@@ -87,13 +90,208 @@ int csv_counts(size_t *rows, size_t *maxlen_colorname)
             {
                 col_len += 1;
             }
+            prev = c;
+        }
+        if(prev != 0) {
+            *rows += 1;
         }
         fclose(color_names_file);
     }
 
     // account for the header row
-    if (rows > 0) {
-        rows -= 1;
+    if (*rows > 0)
+    {
+        *rows -= 1;
     }
+    return 0;
+}
+
+typedef enum
+{
+    COLOR_NAMES = 1,
+    COLOR_HEX_STR,
+    COLOR_HEX_NUM
+} out_col_t;
+
+int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
+{
+    FILE *color_names_file;
+    size_t col = 0, col_len = 0;
+    size_t rows = 0;
+
+    color_names_file = fopen(COLOR_NAMES_DIST_CSV_FILE, "r");
+    if (color_names_file == NULL)
+    {
+        printf("FATAL: unable to open colornames file at %s!"
+               "Have you checked out the submodule?\n",
+               COLOR_NAMES_DIST_CSV_FILE);
+        return 1;
+    }
+    else
+    {
+        int c;
+        char colval[1024];
+        memset(colval, 0, 1024);
+        while ((c = getc(color_names_file)) != EOF)
+        {
+            // putchar(c);
+            if (c == '\n')
+            {
+                // if the second column
+                if (col == 1)
+                {
+                    if (type == COLOR_HEX_STR && rows > 0)
+                    {
+                        fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
+                    }
+                }
+                rows += 1;
+                col = 0;
+                col_len = 0;
+                memset(colval, 0, 1024);
+            }
+            else if (c == ',')
+            {
+                // if the first column
+                if (col == 0)
+                {
+                    if (type == COLOR_NAMES && rows > 0)
+                    {
+                        fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
+                    }
+                }
+                col += 1;
+                col_len = 0;
+                memset(colval, 0, 1024);
+            }
+            else
+            {
+                colval[col_len] = c;
+                col_len += 1;
+            }
+        }
+
+        // if the second column
+        if (col == 1)
+        {
+            if (type == COLOR_HEX_STR && rows > 0)
+            {
+                fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
+            }
+        }
+
+        fclose(color_names_file);
+    }
+
+    return 0;
+}
+
+int write_color_names_c_program()
+{
+    int res;
+    size_t rows, maxlen_colorname;
+    FILE *template_file, *c_file;
+
+    // Step 1: get the row count and max color name length
+    res = csv_counts(&rows, &maxlen_colorname);
+    if (res == 0)
+    {
+        printf("Num rows (excluding header) = %zd, longest color name length = %zd.\n", rows, maxlen_colorname);
+    }
+    else
+    {
+        printf("FATAL: error processing color names csv file.\n");
+        return res;
+    }
+
+    // Step 2: open template file for reading
+    template_file = fopen(COLOR_NAMES_TEMPLATE_FNAME, "r");
+    if (template_file == NULL)
+    {
+        printf("FATAL: unable to open template file at %s!\n",
+               COLOR_NAMES_TEMPLATE_FNAME);
+        return 1;
+    }
+
+    // open c file for writing
+    c_file = fopen(COLOR_NAMES_C_FNAME, "w");
+    if (c_file == NULL)
+    {
+        printf("FATAL: unable to open c file at %s for writing!\n",
+               COLOR_NAMES_C_FNAME);
+        return 1;
+    }
+
+    char line[MAX_TEMPLATE_LINE_LEN + 1];
+    memset(line, 0, MAX_TEMPLATE_LINE_LEN + 1);
+    size_t line_count = 0, line_pos = 0;
+    int c, in_gen_region = 0, wrote_colors = 0;
+
+    while ((c = getc(template_file)) != EOF)
+    {
+        // putchar(c);
+        if (c == '\n' || c == '\r')
+        {
+            if (strcmp(line, COLOR_NAMES_TEMPLATE_MARKER_END) == 0)
+            {
+                printf("MARKER END\n");
+                in_gen_region = 0;
+            }
+
+            if (in_gen_region == 0)
+            {
+                printf("%3zd: %s\n", line_count, line);
+                fprintf(c_file, "%s\n", line);
+            }
+            else
+            {
+                if (wrote_colors == 0)
+                {
+                    fprintf(c_file, "static const char COLOR_NAMES[%zd][%zd] = {\n", rows, maxlen_colorname + 1);
+                    // TODO: write colors strings here
+                    csv_color_names_write(c_file, rows, COLOR_NAMES);
+                    fprintf(c_file, "};\n\n");
+
+                    fprintf(c_file, "static const char COLOR_RGB_HEXSTR[%zd][%zd] = {\n", rows, COLOR_HEX_LEN + 1);
+                    // TODO: write hex strings here
+                    csv_color_names_write(c_file, rows, COLOR_HEX_STR);
+                    fprintf(c_file, "};\n");
+
+                    wrote_colors = 1;
+                }
+            }
+
+            if (strcmp(line, COLOR_NAMES_TEMPLATE_MARKER_BEGIN) == 0)
+            {
+                printf("MARKER BEGIN\n");
+                in_gen_region = 1;
+            }
+
+            line_count += 1;
+            memset(line, 0, MAX_TEMPLATE_LINE_LEN + 1);
+            line_pos = 0;
+        }
+        else
+        {
+            line[line_pos] = c;
+            line_pos += 1;
+            if (line_pos > (MAX_TEMPLATE_LINE_LEN + 1))
+            {
+                printf("Fatal: no more space in buffer!\n");
+                return 2;
+            }
+        }
+    }
+
+    // handle the last line if there was no newline
+    printf("%3zd: %s\n", line_count, line);
+    if (in_gen_region == 0)
+    {
+        fprintf(c_file, "%s\n", line);
+    }
+
+    fclose(c_file);
+    fclose(template_file);
+
     return 0;
 }
