@@ -25,6 +25,7 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #define COLOR_NAMES_DIST_CSV_FILE "color-names/dist/colornames.bestof.csv"
 #define COLOR_NAMES_FILE_HAS_HEADER 1
@@ -36,7 +37,16 @@ SOFTWARE.
 #define COLOR_NAMES_TEMPLATE_MARKER_END "// generated color names end"
 #define MAX_TEMPLATE_LINE_LEN 1024
 
+typedef enum
+{
+    COLOR_NAMES = 1,
+    COLOR_HEX_STR,
+    COLOR_HEX_NUM
+} out_col_t;
+
 int csv_counts(size_t *rows, size_t *maxlen_colorname);
+void color_hex_to_triple(char *hex, uint8_t *r, uint8_t *g, uint8_t *b);
+int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type);
 int write_color_names_c_program();
 
 int main(int argc, char *argv[])
@@ -92,7 +102,8 @@ int csv_counts(size_t *rows, size_t *maxlen_colorname)
             }
             prev = c;
         }
-        if(prev != 0) {
+        if (prev != 0)
+        {
             *rows += 1;
         }
         fclose(color_names_file);
@@ -106,12 +117,42 @@ int csv_counts(size_t *rows, size_t *maxlen_colorname)
     return 0;
 }
 
-typedef enum
+// int count = 0;
+
+uint8_t getNumFromHexStr(char *inp)
 {
-    COLOR_NAMES = 1,
-    COLOR_HEX_STR,
-    COLOR_HEX_NUM
-} out_col_t;
+    // if (count < 3)
+    // {
+    //     printf("%s = %d, %hu\n", inp, strtoul(inp, NULL, 16), (uint8_t)strtoul(inp, NULL, 16));
+    // }
+    return (uint8_t)strtoul(inp, NULL, 16);
+}
+
+void color_hex_to_triple(char *hex, uint8_t *r, uint8_t *g, uint8_t *b)
+{
+    char rstr[3], gstr[3], bstr[3];
+    rstr[0] = hex[1];
+    rstr[1] = hex[2];
+    gstr[0] = hex[3];
+    gstr[1] = hex[4];
+    bstr[0] = hex[5];
+    bstr[1] = hex[6];
+
+    rstr[2] = '\0';
+    gstr[2] = '\0';
+    bstr[2] = '\0';
+
+    *r = getNumFromHexStr(rstr);
+    *g = getNumFromHexStr(gstr);
+    *b = getNumFromHexStr(bstr);
+
+    // if (count < 3)
+    // {
+    //     printf("%s -> [%hu, %hu, %hu]\n",
+    //            hex, r, g, b);
+    //     count += 1;
+    // }
+}
 
 int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
 {
@@ -132,6 +173,8 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
         int c;
         char colval[1024];
         memset(colval, 0, 1024);
+        uint8_t r, g, b;
+
         while ((c = getc(color_names_file)) != EOF)
         {
             // putchar(c);
@@ -143,6 +186,11 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
                     if (type == COLOR_HEX_STR && rows > 0)
                     {
                         fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
+                    }
+                    if (type == COLOR_HEX_NUM && rows > 0)
+                    {
+                        color_hex_to_triple(colval, &r, &g, &b);
+                        fprintf(c_file, "{%hu, %hu, %hu}%s\n", r, g, b, (rows != total_rows) ? "," : "");
                     }
                 }
                 rows += 1;
@@ -177,6 +225,11 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
             if (type == COLOR_HEX_STR && rows > 0)
             {
                 fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
+            }
+            if (type == COLOR_HEX_NUM && rows > 0)
+            {
+                color_hex_to_triple(colval, &r, &g, &b);
+                fprintf(c_file, "{%hu, %hu, %hu}%s\n", r, g, b, (rows != total_rows) ? "," : "");
             }
         }
 
@@ -248,14 +301,16 @@ int write_color_names_c_program()
                 if (wrote_colors == 0)
                 {
                     fprintf(c_file, "static const char COLOR_NAMES[%zd][%zd] = {\n", rows, maxlen_colorname + 1);
-                    // TODO: write colors strings here
                     csv_color_names_write(c_file, rows, COLOR_NAMES);
                     fprintf(c_file, "};\n\n");
 
-                    fprintf(c_file, "static const char COLOR_RGB_HEXSTR[%zd][%zd] = {\n", rows, COLOR_HEX_LEN + 1);
-                    // TODO: write hex strings here
+                    fprintf(c_file, "static const char COLOR_RGB_HEXSTR[%zd][%d] = {\n", rows, COLOR_HEX_LEN + 1);
                     csv_color_names_write(c_file, rows, COLOR_HEX_STR);
-                    fprintf(c_file, "};\n");
+                    fprintf(c_file, "};\n\n");
+
+                    fprintf(c_file, "static const char COLOR_RGB_TRIPLE[%zd][%d][3] = {\n", rows, COLOR_HEX_LEN + 1);
+                    csv_color_names_write(c_file, rows, COLOR_HEX_NUM);
+                    fprintf(c_file, "};\n\n");
 
                     wrote_colors = 1;
                 }
