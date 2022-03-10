@@ -67,7 +67,7 @@ static const char COLOR_RGB_HEXSTR[2][8] = {
     "#ff0000",
     "#000000"};
 
-static const uint8_t COLOR_RGB_TRIPLE[2][8][3] = {
+static const uint8_t COLOR_RGB_TRIPLE[2][3] = {
     {255, 0, 0},
     {0, 0, 0}};
 // generated color names end
@@ -100,9 +100,8 @@ int color_name_exists(const char *color_name)
     }
 }
 
-int color_name_get_rgb_string(const char *color_name, char** color_hex_str)
+int color_name_get_rgb_string(const char *color_name, char* color_hex_str)
 {
-    *color_hex_str = NULL;
     size_t idx;
     int found = 0;
 
@@ -119,7 +118,7 @@ int color_name_get_rgb_string(const char *color_name, char** color_hex_str)
     }
     else
     {
-        *color_hex_str = COLOR_RGB_HEXSTR[idx];
+        strcpy(color_hex_str, COLOR_RGB_HEXSTR[idx]);
         return 1;
     }
 }

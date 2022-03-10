@@ -7749,7 +7749,7 @@ static const char COLOR_RGB_HEXSTR[3842][8] = {
 "#6bc026"
 };
 
-static const char COLOR_RGB_TRIPLE[3842][8][3] = {
+static const char COLOR_RGB_TRIPLE[3842][3] = {
 {201, 63, 56},
 {25, 25, 112},
 {229, 110, 36},
@@ -11624,9 +11624,8 @@ int color_name_exists(const char *color_name)
     }
 }
 
-int color_name_get_rgb_string(const char *color_name, char** color_hex_str)
+int color_name_get_rgb_string(const char *color_name, char* color_hex_str)
 {
-    *color_hex_str = NULL;
     size_t idx;
     int found = 0;
 
@@ -11643,7 +11642,7 @@ int color_name_get_rgb_string(const char *color_name, char** color_hex_str)
     }
     else
     {
-        *color_hex_str = COLOR_RGB_HEXSTR[idx];
+        strcpy(color_hex_str, COLOR_RGB_HEXSTR[idx]);
         return 1;
     }
 }

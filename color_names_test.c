@@ -50,9 +50,27 @@ SOFTWARE.
 
 */
 
+#include <string.h>
 #include "color_names.h"
 
-int main(int argc, char*argv[])
+int main(int argc, char *argv[])
 {
+    uint8_t r, g, b;
+    int found = 0;
+    char hexstr[8];
+    memset(hexstr, 0, 8);
 
+    printf("color name red exists = [%d].\n", color_name_exists("red"));
+    printf("color name sad exists = [%d].\n", color_name_exists("sad"));
+
+    found = color_name_get_rgb_string("red", hexstr);
+    printf("color name red hexstr = [%s].\n",
+           found == 0 ? "not found" : hexstr);
+
+    found = color_name_get_rgb("red", &r, &g, &b);
+    if (found == 1)
+    {
+        printf("color name red, rgb triple = [%hu, %hu, %hu].\n",
+               r, g, b);
+    }
 }

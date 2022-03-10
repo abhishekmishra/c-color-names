@@ -53,6 +53,8 @@ SOFTWARE.
 #ifndef __COLOR_NAMES_H__
 #define __COLOR_NAMES_H__
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -71,11 +73,11 @@ extern "C"
      * find the hex string for the given color name if found
      *
      * @param color_name name of the color to look for (lowercase chars only)
-     * @param color_hexstr pointer to a string. it will contain the hexstring 
-     *         in format #xxxxxx if color name found, NULL otherwise.
+     * @param color_hexstr string of length 8. it will contain the hexstring
+     *         in format #xxxxxx if color name found, unchanged otherwise.
      * @return int 0 or 1 indicating whether color name found
      */
-    int color_name_get_rgb_string(const char *color_name, char** color_hex_str);
+    int color_name_get_rgb_string(const char *color_name, char *color_hex_str);
 
     /**
      * find the rgb values for the given color name if found

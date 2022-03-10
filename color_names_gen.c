@@ -342,7 +342,7 @@ int write_color_names_c_program()
                     csv_color_names_write(c_file, rows, COLOR_HEX_STR);
                     fprintf(c_file, "};\n\n");
 
-                    fprintf(c_file, "static const char COLOR_RGB_TRIPLE[%zd][%d][3] = {\n", rows, COLOR_HEX_LEN + 1);
+                    fprintf(c_file, "static const char COLOR_RGB_TRIPLE[%zd][3] = {\n", rows);
                     csv_color_names_write(c_file, rows, COLOR_HEX_NUM);
                     fprintf(c_file, "};\n\n");
 
