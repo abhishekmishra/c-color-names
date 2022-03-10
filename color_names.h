@@ -57,6 +57,15 @@ SOFTWARE.
 extern "C" {
 #endif
 
+/**
+ * check if the name exists in the color list. color name should
+ * be lowercase, other wise match might fail.
+ * 
+ * @param color_name name of the color to look for (lowercase chars only)
+ * @return int 0 or 1 indicating whether color name found
+ */
+int color_name_exists(const char* color_name);
+
 char* color_name_get_rgb_string(const char* color_name);
 
 #ifdef __cplusplus

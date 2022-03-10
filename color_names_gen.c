@@ -54,6 +54,7 @@ SOFTWARE.
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <ctype.h>
 
 #define COLOR_NAMES_DIST_CSV_FILE "color-names/dist/colornames.bestof.csv"
 #define COLOR_NAMES_FILE_HAS_HEADER 1
@@ -233,6 +234,10 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
                 {
                     if (type == COLOR_NAMES && rows > 0)
                     {
+                        for(int i = 0; i < strlen(colval); i++){
+                          colval[i] = tolower(colval[i]);
+                        }
+
                         fprintf(c_file, "\"%s\"%s\n", colval, (rows != total_rows) ? "," : "");
                     }
                 }
