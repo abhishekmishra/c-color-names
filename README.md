@@ -16,8 +16,22 @@ git submodule update
 make genbuild build run
 ```
 
+## From release
+
+```bash
+# get the release
+wget -c https://github.com/abhishekmishra/c-color-names/archive/refs/tags/v0.1.0-alpha.0.zip -O c-color-names.zip
+unzip c-color-names.zip
+
+# Now you can use color_names.h and color_names.c in your code.
+
+# build the test binary (optional)
+cd c-color-names-0.1.0-alpha.0
+make genbuild build run
+```
+
 # Docs
-For detailed API documentation see color_names.h
+For detailed API documentation see [color_names.h](color_names.h)
 
 # Sample Usage
 Include color_names.h in program and build with color_names.c.
@@ -34,3 +48,10 @@ if (found == 1)
 // output :-
 // color name red, rgb triple = [255, 0, 0].
 ```
+
+# Release Notes
+* The current release is [v0.1.0-alpha.0](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0)
+* Release notes for all releases are at [CHANGELOG.md](CHANGELOG.md).
+
+# License
+* The library is released under the [MIT License](LICENSE).
