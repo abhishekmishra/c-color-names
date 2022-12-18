@@ -33,9 +33,9 @@ build:
 
 run:
 ifeq ($(OSFLAG),WIN32)
-	./build/Debug/c-color-names-gen
+	./build/Debug/c-color-names-test
 else
-	./build/c-color-names-gen
+	./build/c-color-names-test
 endif
 
 clean:
