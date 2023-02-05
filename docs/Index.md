@@ -12,7 +12,7 @@ API if needed.**
 
 # Install & Build
 
-See [HOWTO_BUILD](@ref HOWTO_BUILD.md).
+See [BUILD](@ref BUILD.md).
 
 # API
 The public API of the library is provided by 
