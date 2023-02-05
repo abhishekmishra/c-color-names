@@ -88,7 +88,8 @@ int color_name_get_rgb_string(const char *color_name, char *color_hex_str);
  * @param b blue value
  * @return int 0 or 1 indicating whether color name found.
  */
-int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b);
+int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, 
+    uint8_t *b);
 
 #ifdef __cplusplus
 }
