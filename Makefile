@@ -38,6 +38,14 @@ else
 	./build/c-color-names-test
 endif
 
+gen:
+ifeq ($(OSFLAG),WIN32)
+	./build/Debug/c-color-names-gen
+else
+	./build/c-color-names-gen
+endif
+
+
 clean:
 	cmake --build ./build --target clean
 
@@ -62,6 +70,7 @@ help:
 		@echo "  all:      Runs the clean, build, and run targets."
 		@echo "  build:    Runs the cmake project build target."
 		@echo "  run:      Runs the debug executable."
+		@echo "  gen:      Generate new files from the color-names colors."
 		@echo "  clean:    Runs the cmake project clean target."
 		@echo "  install:  Runs the cmake project install target."
 		@echo "  delbuild: Deletes the cmake build directory!"
