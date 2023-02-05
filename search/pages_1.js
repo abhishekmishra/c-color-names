@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['howto_5fbuild_13',['HOWTO_BUILD',['../md_HOWTO_BUILD.html',1,'']]]
+  ['c_2dcolor_2dnames_20documentation_12',['C-COLOR-NAMES Documentation',['../index.html',1,'']]],
+  ['changelog_13',['CHANGELOG',['../md_CHANGELOG.html',1,'']]]
 ];

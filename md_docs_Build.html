@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>c-color-names: HOWTO_BUILD</title>
+<title>c-color-names: Build</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -64,56 +64,83 @@ $(function() {
 </div><!-- top -->
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">HOWTO_BUILD </div>  </div>
+<div class="title">Build </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p style="text-align: center"></p>
-<p><u> Table of Contents </u> </p>
-<ul>
-<li><a href="#1-setup-build">1. Setup build</a><ul>
-<li><a href="#11-pre-requisites">1.1. Pre-requisites</a></li>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md1">Build c-color-names</a><ul><li class="level2"><a href="#autotoc_md2">Pre-requisites</a></li>
+<li class="level2"><a href="#autotoc_md3">From source</a></li>
+<li class="level2"><a href="#autotoc_md4">From release</a></li>
 </ul>
 </li>
-<li><a href="#2-update-color-names-submodule-to-release-tag">2. Update color-names submodule to release tag</a></li>
+<li class="level1"><a href="#autotoc_md5">Release</a><ul><li class="level2"><a href="#autotoc_md6">Update color-names submodule to release tag</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md8"></a>
-1. Setup build</h1>
-<h2><a class="anchor" id="autotoc_md9"></a>
-1.1. Pre-requisites</h2>
+</li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
+Build c-color-names</h1>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Pre-requisites</h2>
 <ul>
 <li><code>Cmake</code>: for build generation</li>
 <li><code>make (optional)</code>: for triggering various build targets. If make is not available - look at the targets in Makefile and run the commands for the task.</li>
 </ul>
-<div class="fragment"><div class="line"># checkout repo/tag</div>
-<div class="line">$ git clone git@github.com:abhishekmishra/c-color-names.git</div>
+<h2><a class="anchor" id="autotoc_md3"></a>
+From source</h2>
+<div class="fragment"><div class="line"># clone the repo and init the submodules</div>
+<div class="line">git clone https://github.com/abhishekmishra/c-color-names.git</div>
+<div class="line">cd c-color-names</div>
+<div class="line">git submodule init</div>
+<div class="line">git submodule update</div>
+<div class="line"> </div>
+<div class="line"># generate the cmake build, build the code, run the test program</div>
+<div class="line">make genbuild build run</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
+From release</h2>
+<div class="fragment"><div class="line"># get the release</div>
+<div class="line">wget -c https://github.com/abhishekmishra/c-color-names/archive/refs/tags/v0.1.0-alpha.0.zip -O c-color-names.zip</div>
+<div class="line">unzip c-color-names.zip</div>
+<div class="line"> </div>
+<div class="line"># Now you can use color_names.h and color_names.c in your code.</div>
+<div class="line"> </div>
+<div class="line"># build the test binary (optional)</div>
+<div class="line">cd c-color-names-0.1.0-alpha.0</div>
+<div class="line"> </div>
+<div class="line"># generate the cmake build, build the code, run the test program</div>
+<div class="line">make genbuild build run</div>
+</div><!-- fragment --><div class="fragment"><div class="line"># checkout repo/tag</div>
+<div class="line">git clone git@github.com:abhishekmishra/c-color-names.git</div>
 <div class="line"> </div>
 <div class="line"># setup cmake build for your platform</div>
 <div class="line"># and build it</div>
-<div class="line">$ make genbuild build</div>
+<div class="line">make genbuild build</div>
 <div class="line"> </div>
 <div class="line"># run sanity tests</div>
-<div class="line">$ make test</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
-2. Update color-names submodule to release tag</h1>
+<div class="line">make run</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+Release</h1>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Update color-names submodule to release tag</h2>
 <div class="fragment"><div class="line"># switch to submodule dir</div>
-<div class="line">$ cd color-names</div>
+<div class="line">cd color-names</div>
 <div class="line"> </div>
 <div class="line"># update to tag &lt;tag&gt;</div>
-<div class="line">$ git checkout &lt;tag&gt;</div>
+<div class="line">git checkout &lt;tag&gt;</div>
 <div class="line"> </div>
 <div class="line"># go to parent dir</div>
-<div class="line">$ cd ..</div>
+<div class="line">cd ..</div>
 <div class="line"> </div>
 <div class="line"># run the gen target to update the generated color-names.c</div>
 <div class="line"># if running this or the first time make sure</div>
 <div class="line"># &quot;make genbuild build&quot; has been run.</div>
-<div class="line">$ make gen</div>
+<div class="line">make gen</div>
 <div class="line"> </div>
 <div class="line"># run tests to do some sanity checks on generated code</div>
-<div class="line">$ make test</div>
+<div class="line">make run</div>
 <div class="line"> </div>
 <div class="line"># check-in changes</div>
-<div class="line">$ git add color-names; git commit -m &quot;update to &lt;tag&gt;&quot;; git push</div>
+<div class="line">git add color-names; git commit -m &quot;update to &lt;tag&gt;&quot;; git push</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->

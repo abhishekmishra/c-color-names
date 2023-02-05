@@ -68,46 +68,23 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md0">Install &amp; Build</a><ul><li class="level2"><a href="#autotoc_md1">From source</a></li>
-<li class="level2"><a href="#autotoc_md2">From release</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md3">API</a></li>
-<li class="level1"><a href="#autotoc_md4">Sample Usage</a></li>
-<li class="level1"><a href="#autotoc_md5">Release Notes</a></li>
-<li class="level1"><a href="#autotoc_md6">License</a></li>
+<ul><li class="level1"><a href="#autotoc_md7">Install &amp; Build</a></li>
+<li class="level1"><a href="#autotoc_md8">API</a></li>
+<li class="level1"><a href="#autotoc_md9">Sample Usage</a></li>
+<li class="level1"><a href="#autotoc_md10">Release Notes</a></li>
+<li class="level1"><a href="#autotoc_md11">License</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
 <p>ANSI C API for the excellent collection of colors in the <a href="https://github.com/meodai/color-names">color-names</a> package.</p>
 <p><b>NOTE: This library is still under development. The public API is unstable till the library reaches beta status. There will be breaking changes in public API if needed.</b></p>
-<h1><a class="anchor" id="autotoc_md0"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Install &amp; Build</h1>
-<h2><a class="anchor" id="autotoc_md1"></a>
-From source</h2>
-<div class="fragment"><div class="line"># clone the repo and init the submodules</div>
-<div class="line">git clone https://github.com/abhishekmishra/c-color-names.git</div>
-<div class="line">cd c-color-names</div>
-<div class="line">git submodule init</div>
-<div class="line">git submodule update</div>
-<div class="line"> </div>
-<div class="line"># generate the cmake build, build the code, run the test program</div>
-<div class="line">make genbuild build run</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md2"></a>
-From release</h2>
-<div class="fragment"><div class="line"># get the release</div>
-<div class="line">wget -c https://github.com/abhishekmishra/c-color-names/archive/refs/tags/v0.1.0-alpha.0.zip -O c-color-names.zip</div>
-<div class="line">unzip c-color-names.zip</div>
-<div class="line"> </div>
-<div class="line"># Now you can use color_names.h and color_names.c in your code.</div>
-<div class="line"> </div>
-<div class="line"># build the test binary (optional)</div>
-<div class="line">cd c-color-names-0.1.0-alpha.0</div>
-<div class="line">make genbuild build run</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md3"></a>
+<p>See <a class="el" href="md_docs_Build.html">BUILD</a>.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
 API</h1>
 <p>The public API of the library is provided by <a class="el" href="color__names_8h.html">color_names.h</a>.</p>
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Sample Usage</h1>
 <p>Include <a class="el" href="color__names_8h.html" title="c-color-names main header file. Defines the API of c-color-names.">color_names.h</a> in program and build with color_names.c.</p>
 <div class="fragment"><div class="line">uint8_t r, g, b;</div>
@@ -121,13 +98,13 @@ Sample Usage</h1>
 <div class="line"><span class="comment">// output :-</span></div>
 <div class="line"><span class="comment">// color name red, rgb triple = [255, 0, 0].</span></div>
 <div class="ttc" id="acolor__names_8h_html_a9fdc3df67386af99d8980d04c9cf00bb"><div class="ttname"><a href="color__names_8h.html#a9fdc3df67386af99d8980d04c9cf00bb">color_name_get_rgb</a></div><div class="ttdeci">int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b)</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
 Release Notes</h1>
 <ul>
 <li>The current release is <a href="https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0">v0.1.0-alpha.0</a></li>
 <li>Release notes for all releases are at <a class="el" href="md_CHANGELOG.html">CHANGELOG</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 License</h1>
 <ul>
 <li>The library is released under the <b>MIT License</b>. See the <code>LICENSE</code> file in the source for details. </li>
