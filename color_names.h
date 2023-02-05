@@ -50,6 +50,11 @@ SOFTWARE.
 
 */
 
+/**
+ * \file color_names.h
+ * \brief c-color-names main header file. Defines the API of c-color-names.
+ */
+
 #ifndef __COLOR_NAMES_H__
 #define __COLOR_NAMES_H__
 

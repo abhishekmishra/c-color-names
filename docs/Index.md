@@ -1,5 +1,14 @@
-# c-color-names
-ANSI C API for the excellent collection of colors in the [color-names](https://github.com/meodai/color-names) package.
+# C-COLOR-NAMES Documentation           {#mainpage}
+
+[TOC]
+
+ANSI C API for the excellent collection of colors in the
+[color-names](https://github.com/meodai/color-names) package.
+
+**NOTE: This library is still under development. The public API is unstable 
+till the library reaches beta status. There will be breaking changes in public 
+API if needed.**
+
 
 # Install & Build
 
@@ -30,8 +39,9 @@ cd c-color-names-0.1.0-alpha.0
 make genbuild build run
 ```
 
-# Docs
-For detailed API documentation see [color_names.h](color_names.h)
+# API
+The public API of the library is provided by 
+[color_names.h](@ref color_names.h).
 
 # Sample Usage
 Include color_names.h in program and build with color_names.c.
@@ -50,7 +60,8 @@ if (found == 1)
 ```
 
 # Release Notes
-* The current release is [v0.1.0-alpha.0](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0)
+* The current release is 
+  [v0.1.0-alpha.0](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0)
 * Release notes for all releases are at [CHANGELOG.md](CHANGELOG.md).
 
 # License
