@@ -62,7 +62,8 @@ if (found == 1)
 # Release Notes
 * The current release is 
   [v0.1.0-alpha.0](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0)
-* Release notes for all releases are at [CHANGELOG.md](CHANGELOG.md).
+* Release notes for all releases are at [CHANGELOG](@ref CHANGELOG.md).
 
 # License
-* The library is released under the [MIT License](LICENSE).
+* The library is released under the __MIT License__. See the `LICENSE` file
+  in the source for details.
