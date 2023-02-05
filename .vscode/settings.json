@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "*.h": "c"
+    },
+
+    "licenser.author": "Abhishek Mishra",
+    "licenser.license": "MIT",
+    "cmake.configureOnOpen": false,
+    "editor.formatOnSave": false
+}
