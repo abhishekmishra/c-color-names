@@ -68,43 +68,70 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md7">Install &amp; Build</a></li>
-<li class="level1"><a href="#autotoc_md8">API</a></li>
-<li class="level1"><a href="#autotoc_md9">Sample Usage</a></li>
-<li class="level1"><a href="#autotoc_md10">Release Notes</a></li>
-<li class="level1"><a href="#autotoc_md11">License</a></li>
+<ul><li class="level1"><a href="#autotoc_md7">Usage</a><ul><li class="level2"><a href="#autotoc_md8">Install</a></li>
+<li class="level2"><a href="#autotoc_md9">Use</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md10">API</a></li>
+<li class="level1"><a href="#autotoc_md11">Install &amp; Build</a></li>
+<li class="level1"><a href="#autotoc_md12">Release Notes</a></li>
+<li class="level1"><a href="#autotoc_md13">License</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="mainpage"></a></p>
 <p>ANSI C API for the excellent collection of colors in the <a href="https://github.com/meodai/color-names">color-names</a> package.</p>
 <p><b>NOTE: This library is still under development. The public API is unstable till the library reaches beta status. There will be breaking changes in public API if needed.</b></p>
 <h1><a class="anchor" id="autotoc_md7"></a>
-Install &amp; Build</h1>
-<p>See <a class="el" href="md_docs_Build.html">BUILD</a>.</p>
-<h1><a class="anchor" id="autotoc_md8"></a>
-API</h1>
-<p>The public API of the library is provided by <a class="el" href="color__names_8h.html">color_names.h</a>.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
-Sample Usage</h1>
-<p>Include <a class="el" href="color__names_8h.html" title="c-color-names main header file. Defines the API of c-color-names.">color_names.h</a> in program and build with color_names.c.</p>
-<div class="fragment"><div class="line">uint8_t r, g, b;</div>
-<div class="line"><span class="keywordtype">int</span> found = <a class="code" href="color__names_8h.html#a9fdc3df67386af99d8980d04c9cf00bb">color_name_get_rgb</a>(<span class="stringliteral">&quot;red&quot;</span>, &amp;r, &amp;g, &amp;b);</div>
-<div class="line"><span class="keywordflow">if</span> (found == 1)</div>
+Usage</h1>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Install</h2>
+<p>The recommended method of using this library is to copy two source files into your own codebase, and include it in the build.</p><ol type="1">
+<li><code><a class="el" href="color__names_8h.html" title="c-color-names main header file. Defines the API of c-color-names.">color_names.h</a></code>: header file</li>
+<li><code>color.names.c</code>: implementaion file</li>
+</ol>
+<h2><a class="anchor" id="autotoc_md9"></a>
+Use</h2>
+<p>Include <a class="el" href="color__names_8h.html" title="c-color-names main header file. Defines the API of c-color-names.">color_names.h</a> in program and and make sure to build with color_names.c.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="color__names_8h.html">color_names.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[])</div>
 <div class="line">{</div>
-<div class="line">    printf(<span class="stringliteral">&quot;color name red, rgb triple = [%hu, %hu, %hu].\n&quot;</span>,</div>
-<div class="line">            r, g, b);</div>
+<div class="line">    <span class="comment">// declare 8-bit integers to hold r,g,b values</span></div>
+<div class="line">    <span class="comment">// range of r,g,b values is [0, 255]</span></div>
+<div class="line">    uint8_t r, g, b;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// fetch the r,g,b values for color &#39;red&#39;</span></div>
+<div class="line">    <span class="keywordtype">int</span> found = <a class="code" href="color__names_8h.html#a9fdc3df67386af99d8980d04c9cf00bb">color_name_get_rgb</a>(<span class="stringliteral">&quot;red&quot;</span>, &amp;r, &amp;g, &amp;b);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// if the color name &#39;red&#39; was found, print the r,g,b values</span></div>
+<div class="line">    <span class="keywordflow">if</span> (found == 1)</div>
+<div class="line">    {</div>
+<div class="line">        printf(<span class="stringliteral">&quot;color name red, rgb triple = [%hu, %hu, %hu].\n&quot;</span>,</div>
+<div class="line">                r, g, b);</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    exit(0);</div>
 <div class="line">}</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// output :-</span></div>
 <div class="line"><span class="comment">// color name red, rgb triple = [255, 0, 0].</span></div>
+<div class="ttc" id="acolor__names_8h_html"><div class="ttname"><a href="color__names_8h.html">color_names.h</a></div><div class="ttdoc">c-color-names main header file. Defines the API of c-color-names.</div></div>
 <div class="ttc" id="acolor__names_8h_html_a9fdc3df67386af99d8980d04c9cf00bb"><div class="ttname"><a href="color__names_8h.html#a9fdc3df67386af99d8980d04c9cf00bb">color_name_get_rgb</a></div><div class="ttdeci">int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b)</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+API</h1>
+<p>The public API of the library is provided by <a class="el" href="color__names_8h.html">color_names.h</a>.</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+Install &amp; Build</h1>
+<p>If you wish to build the project locally for experimentation or to make any changes, setup a local development environment as described in <a class="el" href="md_docs_Build.html">BUILD</a>.</p>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Release Notes</h1>
 <ul>
 <li>The current release is <a href="https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0">v0.1.0-alpha.0</a></li>
 <li>Release notes for all releases are at <a class="el" href="md_CHANGELOG.html">CHANGELOG</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 License</h1>
 <ul>
 <li>The library is released under the <b>MIT License</b>. See the <code>LICENSE</code> file in the source for details. </li>
