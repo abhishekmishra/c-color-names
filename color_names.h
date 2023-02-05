@@ -60,35 +60,35 @@ extern "C"
 {
 #endif
 
-    /**
-     * check if the name exists in the color list. color name should
-     * be lowercase, other wise match might fail.
-     *
-     * @param color_name name of the color to look for (lowercase chars only)
-     * @return int 0 or 1 indicating whether color name found
-     */
-    int color_name_exists(const char *color_name);
+/**
+ * check if the name exists in the color list. color name should
+ * be lowercase, other wise match might fail.
+ *
+ * @param color_name name of the color to look for (lowercase chars only)
+ * @return int 0 or 1 indicating whether color name found
+ */
+int color_name_exists(const char *color_name);
 
-    /**
-     * find the hex string for the given color name if found
-     *
-     * @param color_name name of the color to look for (lowercase chars only)
-     * @param color_hexstr string of length 8. it will contain the hexstring
-     *         in format #xxxxxx if color name found, unchanged otherwise.
-     * @return int 0 or 1 indicating whether color name found
-     */
-    int color_name_get_rgb_string(const char *color_name, char *color_hex_str);
+/**
+ * find the hex string for the given color name if found
+ *
+ * @param color_name name of the color to look for (lowercase chars only)
+ * @param color_hexstr string of length 8. it will contain the hexstring
+ *         in format #xxxxxx if color name found, unchanged otherwise.
+ * @return int 0 or 1 indicating whether color name found
+ */
+int color_name_get_rgb_string(const char *color_name, char *color_hex_str);
 
-    /**
-     * find the rgb values for the given color name if found
-     *
-     * @param color_name name of the color to look for (lowercase chars only)
-     * @param r red value
-     * @param g green value
-     * @param b blue value
-     * @return int 0 or 1 indicating whether color name found.
-     */
-    int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b);
+/**
+ * find the rgb values for the given color name if found
+ *
+ * @param color_name name of the color to look for (lowercase chars only)
+ * @param r red value
+ * @param g green value
+ * @param b blue value
+ * @return int 0 or 1 indicating whether color name found.
+ */
+int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b);
 
 #ifdef __cplusplus
 }
