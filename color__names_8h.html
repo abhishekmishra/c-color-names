@@ -84,6 +84,10 @@ Functions</h2></td></tr>
 <tr class="separator:a0d54ff3f43f10030468a4e4a754afc79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fdc3df67386af99d8980d04c9cf00bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color__names_8h.html#a9fdc3df67386af99d8980d04c9cf00bb">color_name_get_rgb</a> (const char *color_name, uint8_t *r, uint8_t *g, uint8_t *b)</td></tr>
 <tr class="separator:a9fdc3df67386af99d8980d04c9cf00bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae154ebeedae652cb561d0b437c890a9b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color__names_8h.html#ae154ebeedae652cb561d0b437c890a9b">color_name_find_rgb</a> (uint8_t r, uint8_t g, uint8_t b)</td></tr>
+<tr class="separator:ae154ebeedae652cb561d0b437c890a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ed208e89eaeb0f99027e6ccffe976f7"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color__names_8h.html#a9ed208e89eaeb0f99027e6ccffe976f7">color_name_find_hex</a> (const char *hex)</td></tr>
+<tr class="separator:a9ed208e89eaeb0f99027e6ccffe976f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>c-color-names main header file. Defines the API of c-color-names. </p>
@@ -111,6 +115,76 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>int 0 or 1 indicating whether color name found </dd></dl>
+
+</div>
+</div>
+<a id="a9ed208e89eaeb0f99027e6ccffe976f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ed208e89eaeb0f99027e6ccffe976f7">&#9670;&nbsp;</a></span>color_name_find_hex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* color_name_find_hex </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>hex</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>find the color name for the given color hex string in format #rrggbb. returns NULL if color is not found.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hex</td><td>hex string (format #rrggbb) of the color to be looked up. must be exactly 7 chars in length. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>color name (NULL if not found) </dd></dl>
+
+</div>
+</div>
+<a id="ae154ebeedae652cb561d0b437c890a9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae154ebeedae652cb561d0b437c890a9b">&#9670;&nbsp;</a></span>color_name_find_rgb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* color_name_find_rgb </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>find the color name for the given r,g,b triplet. returns NULL if color is not found.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>red value </td></tr>
+    <tr><td class="paramname">g</td><td>green value </td></tr>
+    <tr><td class="paramname">b</td><td>blue value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>color name (NULL if not found) </dd></dl>
 
 </div>
 </div>
