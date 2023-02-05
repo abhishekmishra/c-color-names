@@ -16,7 +16,7 @@ API if needed.**
 The recommended method of using this library is to copy two source files into
 your own codebase, and include it in the build.
 1. `color_names.h`: header file
-2. `color.names.c`: implementaion file
+2. `color_names.c`: implementaion file
 
 ## Use
 
