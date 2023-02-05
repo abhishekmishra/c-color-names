@@ -1,8 +1,8 @@
-# How-to Build c-color-names
+# Build
 
 [TOC]
 
-# Build
+# Build c-color-names
 
 ## Pre-requisites
 
@@ -52,7 +52,9 @@ make genbuild build
 make run
 ```
 
-# Update color-names submodule to release tag
+# Release
+
+## Update color-names submodule to release tag
 
 ```bash
 # switch to submodule dir
