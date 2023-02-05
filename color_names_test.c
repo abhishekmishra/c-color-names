@@ -61,17 +61,49 @@ int main(int argc, char *argv[])
     char hexstr[8];
     memset(hexstr, 0, 8);
 
+    // get color names for existing and non-existing colors
     printf("color name red exists = [%d].\n", color_name_exists("red"));
     printf("color name sad exists = [%d].\n", color_name_exists("sad"));
 
+    // get the hex string for red
     found = color_name_get_rgb_string("red", hexstr);
     printf("color name red hexstr = [%s].\n",
            found == 0 ? "not found" : hexstr);
 
+    // get rgb value for red
     found = color_name_get_rgb("red", &r, &g, &b);
     if (found == 1)
     {
         printf("color name red, rgb triple = [%hu, %hu, %hu].\n",
                r, g, b);
+    }
+
+    // color 'noble black'
+    r = 32;
+    g = 33;
+    b = 36;
+
+    // get the color name for given r,g,b value
+    const char *c = color_name_find_rgb(r, g, b);
+    if(c == NULL)
+    {
+        printf("color name for rgb [%hu, %hu, %hu] not found!\n", r, g, b);
+    }
+    else
+    {
+        printf("color name for rgb [%hu, %hu, %hu] is '%s'\n", r, g, b, c);
+    }
+
+    char *hex = "#202124"; // noble black
+
+    // get the color name for given hex string
+    c = color_name_find_hex(hex);
+    if(c == NULL)
+    {
+        printf("color name for hex [%s] not found!\n", hex);
+    }
+    else
+    {
+        printf("color name for hex [%s] is '%s'\n", hex, c);
     }
 }

@@ -96,6 +96,27 @@ int color_name_get_rgb_string(const char *color_name, char *color_hex_str);
 int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, 
     uint8_t *b);
 
+/**
+ * find the color name for the given r,g,b triplet.
+ * returns NULL if color is not found.
+ *
+ * @param r red value
+ * @param g green value
+ * @param b blue value
+ * @return color name (NULL if not found)
+ */
+const char* color_name_find_rgb(uint8_t r, uint8_t g, uint8_t b);
+
+/**
+ * find the color name for the given color hex string in format #rrggbb.
+ * returns NULL if color is not found.
+ *
+ * @param hex hex string (format #rrggbb) of the color to be looked up. 
+ *      must be exactly 7 chars in length.
+ * @return color name (NULL if not found)
+ */
+const char* color_name_find_hex(const char* hex);
+
 #ifdef __cplusplus
 }
 #endif

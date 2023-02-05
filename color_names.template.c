@@ -87,6 +87,38 @@ int get_color_index(const char *color_name, size_t *index)
     return 0;
 }
 
+int get_rgb_index(uint8_t r, uint8_t g, uint8_t b, size_t *index)
+{
+    for (size_t i = 0; i < NUM_COLORS; i++)
+    {
+        if (COLOR_RGB_TRIPLE[i][0] == r
+            && COLOR_RGB_TRIPLE[i][1] == g
+            && COLOR_RGB_TRIPLE[i][2] == b)
+        {
+            *index = i;
+            return 1;
+        }
+    }
+
+    // not found
+    return 0;
+}
+
+int get_hex_index(const char *color_hex, size_t *index)
+{
+    for (size_t i = 0; i < NUM_COLORS; i++)
+    {
+        if (strcmp(COLOR_RGB_HEXSTR[i], color_hex) == 0)
+        {
+            *index = i;
+            return 1;
+        }
+    }
+
+    // not found
+    return 0;
+}
+
 int color_name_exists(const char *color_name)
 {
     if (color_name != NULL)
@@ -146,4 +178,45 @@ int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g, uint8_t *
         *b = COLOR_RGB_TRIPLE[idx][2];
         return 1;
     }
+}
+
+const char* color_name_find_rgb(uint8_t r, uint8_t g, uint8_t b)
+{
+    size_t idx;
+    int found = 0;
+
+    found = get_rgb_index(r, g, b, &idx);
+
+    if (found == 0)
+    {
+        return NULL;
+    }
+    else
+    {
+        return COLOR_NAMES[idx];
+    }
+}
+
+const char* color_name_find_hex(const char* hex)
+{
+    size_t idx;
+    int found = 0;
+
+    // return NULL if hex is NULL or not 7 chars in length
+    if (hex == NULL || strlen(hex) != 7)
+    {
+        return NULL;
+    }
+
+    found = get_hex_index(hex, &idx);
+
+    if (found == 0)
+    {
+        return NULL;
+    }
+    else
+    {
+        return COLOR_NAMES[idx];
+    }
+
 }
