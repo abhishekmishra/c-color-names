@@ -56,14 +56,28 @@ SOFTWARE.
 #include <stdint.h>
 #include <ctype.h>
 
+/** path to the color names csv file **/
 #define COLOR_NAMES_DIST_CSV_FILE "color-names/dist/colornames.bestof.csv"
+
+/** whether the file has header **/
 #define COLOR_NAMES_FILE_HAS_HEADER 1
+
+/** length of the hex string of form #rrggbb **/
 #define COLOR_HEX_LEN 7
 
+/** name of the color_names.c template file **/
 #define COLOR_NAMES_TEMPLATE_FNAME "color_names.template.c"
+
+/** output c file name **/
 #define COLOR_NAMES_C_FNAME "color_names.c"
+
+/** begin marker in the template **/
 #define COLOR_NAMES_TEMPLATE_MARKER_BEGIN "// generated color names begin"
+
+/** end marker in the template **/
 #define COLOR_NAMES_TEMPLATE_MARKER_END "// generated color names end"
+
+/** max line length in the template file **/
 #define MAX_TEMPLATE_LINE_LEN 1024
 
 typedef enum
@@ -73,11 +87,47 @@ typedef enum
     COLOR_HEX_NUM
 } out_col_t;
 
+/**
+ * Get the row count and length of the longest color name
+ * from the csv color-names file
+ * 
+ * @param rows output var for row count
+ * @param maxlen_colorname output var for length of longest color name
+ * @return 
+ */
 int csv_counts(size_t *rows, size_t *maxlen_colorname);
+
+/**
+ * convert hex string to rgb triple
+ * 
+ * @param hex hex string
+ * @param r red output var
+ * @param g green output var
+ * @param b blue output var
+ */
 void color_hex_to_triple(char *hex, uint8_t *r, uint8_t *g, uint8_t *b);
+
+/**
+ * Write color names column to the output c file.
+ * 
+ * @param c_file the output file handle
+ * @param total_rows total rows to write
+ * @param type the column type to write
+ * 
+ * @return error code
+ */ 
 int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type);
+
+/**
+ * util method that writes the c program
+ * 
+ * @return error code
+ */
 int write_color_names_c_program();
 
+/** ************* MAIN ***************
+ *  write the color_names.c program
+ */
 int main(int argc, char *argv[])
 {
     int res = write_color_names_c_program();
