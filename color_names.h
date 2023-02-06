@@ -108,6 +108,29 @@ int color_name_get_rgb(const char *color_name, uint8_t *r, uint8_t *g,
 const char* color_name_find_rgb(uint8_t r, uint8_t g, uint8_t b);
 
 /**
+ * find the hsv values for the given color name if found
+ *
+ * @param color_name name of the color to look for (lowercase chars only)
+ * @param h hue
+ * @param s saturation
+ * @param v value
+ * @return int 0 or 1 indicating whether color name found.
+ */
+int color_name_get_hsv(const char *color_name, float *h, float *s, 
+    float *v);
+
+/**
+ * find the color name for the given h,s,v triplet.
+ * returns NULL if color is not found.
+ *
+ * @param h hue
+ * @param s saturation
+ * @param v value
+ * @return color name (NULL if not found)
+ */
+const char* color_name_find_hsv(float h, float s, float v);
+
+/**
  * find the color name for the given color hex string in format #rrggbb.
  * returns NULL if color is not found.
  *

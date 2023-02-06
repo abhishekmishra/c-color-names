@@ -54,6 +54,7 @@ SOFTWARE.
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <math.h>
 #include "color_names.h"
 
 // generated color names begin
@@ -70,7 +71,26 @@ static const char COLOR_RGB_HEXSTR[2][8] = {
 static const uint8_t COLOR_RGB_TRIPLE[2][3] = {
     {255, 0, 0},
     {0, 0, 0}};
+
+static const uint8_t COLOR_HSV_TRIPLE[2][3] = {
+    {0, 100, 100},
+    {0, 0, 0}};
+
 // generated color names end
+
+#define FLOAT_EPSILON 0.01f
+
+int compare_float(float x, float y)
+{
+    if(fabs(x - y) < FLOAT_EPSILON)
+    {
+        return 1; //they are same
+    }
+    else
+    {
+        return 0; //they are not same
+    }
+}
 
 int get_color_index(const char *color_name, size_t *index)
 {
@@ -94,6 +114,23 @@ int get_rgb_index(uint8_t r, uint8_t g, uint8_t b, size_t *index)
         if (COLOR_RGB_TRIPLE[i][0] == r
             && COLOR_RGB_TRIPLE[i][1] == g
             && COLOR_RGB_TRIPLE[i][2] == b)
+        {
+            *index = i;
+            return 1;
+        }
+    }
+
+    // not found
+    return 0;
+}
+
+int get_hsv_index(float h, float s, float v, size_t *index)
+{
+    for (size_t i = 0; i < NUM_COLORS; i++)
+    {
+        if (compare_float(COLOR_HSV_TRIPLE[i][0], h)
+            && compare_float(COLOR_HSV_TRIPLE[i][1], s)
+            && compare_float(COLOR_HSV_TRIPLE[i][2], v))
         {
             *index = i;
             return 1;
@@ -186,6 +223,49 @@ const char* color_name_find_rgb(uint8_t r, uint8_t g, uint8_t b)
     int found = 0;
 
     found = get_rgb_index(r, g, b, &idx);
+
+    if (found == 0)
+    {
+        return NULL;
+    }
+    else
+    {
+        return COLOR_NAMES[idx];
+    }
+}
+
+int color_name_get_hsv(const char *color_name, float *h, float *s, 
+    float *v)
+{
+    size_t idx;
+    int found = 0;
+
+    if (color_name == NULL)
+    {
+        return 0;
+    }
+
+    found = get_color_index(color_name, &idx);
+
+    if (found == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        *h = COLOR_HSV_TRIPLE[idx][0];
+        *s = COLOR_HSV_TRIPLE[idx][1];
+        *v = COLOR_HSV_TRIPLE[idx][2];
+        return 1;
+    }
+}
+
+const char* color_name_find_hsv(float h, float s, float v)
+{
+    size_t idx;
+    int found = 0;
+
+    found = get_hsv_index(h, s, v, &idx);
 
     if (found == 0)
     {

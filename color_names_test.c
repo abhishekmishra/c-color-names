@@ -57,6 +57,7 @@ SOFTWARE.
 int main(int argc, char *argv[])
 {
     uint8_t r, g, b;
+    float h, s, v;
     int found = 0;
     char hexstr[8];
     memset(hexstr, 0, 8);
@@ -78,6 +79,14 @@ int main(int argc, char *argv[])
                r, g, b);
     }
 
+    // get hsv value for red
+    found = color_name_get_hsv("red", &h, &s, &v);
+    if (found == 1)
+    {
+        printf("color name red, hsv triple = [%f, %f, %f].\n",
+               h, s, v);
+    }
+
     // color 'noble black'
     r = 32;
     g = 33;
@@ -92,6 +101,22 @@ int main(int argc, char *argv[])
     else
     {
         printf("color name for rgb [%hu, %hu, %hu] is '%s'\n", r, g, b, c);
+    }
+
+    // color 'noble black'
+    h = 225.0f;
+    s = 11.11f;
+    v = 14.11f;
+
+    // get the color name for given h,s,v value
+    c = color_name_find_hsv(h, s, v);
+    if(c == NULL)
+    {
+        printf("color name for hsv [%f, %f, %f] not found!\n", h, s, v);
+    }
+    else
+    {
+        printf("color name for hsv [%f, %f, %f] is '%s'\n", h, s, v, c);
     }
 
     char *hex = "#202124"; // noble black

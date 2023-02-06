@@ -55,6 +55,7 @@ SOFTWARE.
 #include <string.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <math.h>
 
 /** path to the color names csv file **/
 #define COLOR_NAMES_DIST_CSV_FILE "color-names/dist/colornames.bestof.csv"
@@ -82,6 +83,9 @@ SOFTWARE.
 
 /** max value of RGB individual values **/
 #define MAX_COLOR_CHANNEL_VALUE 255.0
+
+/** max value of HSV individual values **/
+#define MAX_HSV_CHANNEL_VALUE 100.0
 
 /** see https://stackoverflow.com/a/3437484/9483968 **/
 #define max(a,b) \
@@ -116,6 +120,8 @@ int csv_counts(size_t *rows, size_t *maxlen_colorname);
  * convert hex string to rgb triple
  * HSV conversion implementation is based on the article at
  * https://mattlockyer.github.io/iat455/documents/rgb-hsv.pdf
+ * h value range modified to be 360 deg based on
+ * https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
  * 
  * @param hex hex string
  * @param r red output var
@@ -132,7 +138,7 @@ void color_hex_to_rgb(char *hex, uint8_t *r, uint8_t *g, uint8_t *b);
  * @param s saturation output var
  * @param v value output var
  */
-void color_hex_to_hsv(char *hex, uint8_t *h, uint8_t *s, uint8_t *v);
+void color_hex_to_hsv(char *hex, float *h, float *s, float *v);
 
 /**
  * Write color names column to the output c file.
@@ -155,7 +161,7 @@ int write_color_names_c_program();
 // some hsv value tests
 void test_hsv()
 {
-    uint8_t h, s, v;
+    float h, s, v;
 
     char* colors[] = {
         "#ff0000",
@@ -175,6 +181,7 @@ void test_hsv()
         "#888888",
         "#eeeeee",
         "#ffffff",
+        "#202124", //noble black
         NULL
     };
 
@@ -183,7 +190,7 @@ void test_hsv()
     {
         char *col = colors[i];
         color_hex_to_hsv(col, &h, &s, &v);
-        printf("%s = hsv (%hu, %hu, %hu)\n", col, h, s, v);
+        printf("%s = hsv (%f, %f, %f)\n", col, h, s, v);
         i += 1;
     }
 }
@@ -193,12 +200,13 @@ void test_hsv()
  */
 int main(int argc, char *argv[])
 {
-    // uncomment to run hsv test
-    // test_hsv();
 
     int res = write_color_names_c_program();
-    return res;
 
+    // uncomment to run hsv test
+    test_hsv();
+
+    return res;
 }
 
 int csv_counts(size_t *rows, size_t *maxlen_colorname)
@@ -327,13 +335,11 @@ void color_hex_to_rgb(char *hex, uint8_t *r, uint8_t *g, uint8_t *b)
     // }
 }
 
-void color_hex_to_hsv(char *hex, uint8_t *h, uint8_t *s, uint8_t *v)
+void color_hex_to_hsv(char *hex, float *h, float *s, float *v)
 {
     uint8_t r, g, b;
     float rs, gs, bs; // scaled values
     float max_color, min_color, delta;
-
-    int hval;
 
     // get the rgb value from the hex string
     color_hex_to_rgb(hex, &r, &g, &b);
@@ -357,33 +363,19 @@ void color_hex_to_hsv(char *hex, uint8_t *h, uint8_t *s, uint8_t *v)
     {
         if(max_color == rs)
         {
-            hval = (gs - bs) / delta;
+            *h = fmod((60 * ((gs - bs) / delta) + 360), 360);
         }
         if(max_color == gs)
         {
-            hval = ((rs - bs) / delta) + 2;
+            *h = fmod((60 * ((rs - bs) / delta) + 120), 360);
         }
         if(max_color == bs)
         {
-            hval = ((rs - gs) / delta) + 4;
+            *h = fmod((60 * ((rs - gs) / delta) + 240), 360);
         }
-
-        // convert the hval to range 0-6
-        if (hval < 0)
-        {
-            hval = (hval % 6) + 6;
-        }
-        else
-        {
-            hval = (hval % 6);
-        }
-
-        // scale to 0-255
-        hval = (hval / 6.0) * MAX_COLOR_CHANNEL_VALUE;
-        *h = hval;
     }
 
-    *v = max_color * MAX_COLOR_CHANNEL_VALUE;
+    *v = max_color * MAX_HSV_CHANNEL_VALUE;
     
     if(*v == 0)
     {
@@ -392,7 +384,7 @@ void color_hex_to_hsv(char *hex, uint8_t *h, uint8_t *s, uint8_t *v)
     else
     {
         float sval = delta / max_color;
-        sval = sval * MAX_COLOR_CHANNEL_VALUE;
+        sval = sval * MAX_HSV_CHANNEL_VALUE;
         *s = sval;
     }
 }
@@ -422,7 +414,8 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
         int c;
         char colval[1024];
         memset(colval, 0, 1024);
-        uint8_t r, g, b, h, s, v;
+        uint8_t r, g, b;
+        float h, s, v;
 
         // read one character from file till it is not EOF
         while ((c = getc(color_names_file)) != EOF)
@@ -453,7 +446,7 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
                     if (type == COLOR_HSV && rows > 0)
                     {
                         color_hex_to_hsv(colval, &h, &s, &v);
-                        fprintf(c_file, "{%hu, %hu, %hu}%s\n", 
+                        fprintf(c_file, "{%f, %f, %f}%s\n", 
                             h, s, v, (rows != total_rows) ? "," : "");
                     }
                 }
@@ -513,7 +506,7 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
             if (type == COLOR_HSV && rows > 0)
             {
                 color_hex_to_hsv(colval, &h, &s, &v);
-                fprintf(c_file, "{%hu, %hu, %hu}%s\n", 
+                fprintf(c_file, "{%f, %f, %f}%s\n", 
                     h, s, v, (rows != total_rows) ? "," : "");
             }
         }
@@ -587,8 +580,9 @@ int write_color_names_c_program()
                 if (wrote_colors == 0)
                 {
                     fprintf(c_file, "#define NUM_COLORS\t%zd\n\n", rows);
-                    fprintf(c_file, "static const char COLOR_NAMES[%zd][%zd] \
-                        = {\n", rows, maxlen_colorname + 1);
+                    fprintf(c_file, "static const char \
+                        COLOR_NAMES[%zd][%zd] = {\n", rows, 
+                        maxlen_colorname + 1);
                     csv_color_names_write(c_file, rows, COLOR_NAMES);
                     fprintf(c_file, "};\n\n");
 
@@ -598,12 +592,12 @@ int write_color_names_c_program()
                     csv_color_names_write(c_file, rows, COLOR_HEX_STR);
                     fprintf(c_file, "};\n\n");
 
-                    fprintf(c_file, "static const char \
+                    fprintf(c_file, "static const uint8_t \
                         COLOR_RGB_TRIPLE[%zd][3] = {\n", rows);
                     csv_color_names_write(c_file, rows, COLOR_RGB);
                     fprintf(c_file, "};\n\n");
 
-                    fprintf(c_file, "static const char \
+                    fprintf(c_file, "static const float \
                         COLOR_HSV_TRIPLE[%zd][3] = {\n", rows);
                     csv_color_names_write(c_file, rows, COLOR_HSV);
 
