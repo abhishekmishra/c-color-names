@@ -82,21 +82,10 @@ SOFTWARE.
 #define MAX_TEMPLATE_LINE_LEN 1024
 
 /** max value of RGB individual values **/
-#define MAX_COLOR_CHANNEL_VALUE 255.0
+#define MAX_COLOR_CHANNEL_VALUE 255.0f
 
 /** max value of HSV individual values **/
-#define MAX_HSV_CHANNEL_VALUE 100.0
-
-/** see https://stackoverflow.com/a/3437484/9483968 **/
-#define max(a,b) \
-    ({ __typeof__ (a) _a = (a); \
-        __typeof__ (b) _b = (b); \
-        _a > _b ? _a : _b; })
-
-#define min(a,b) \
-    ({ __typeof__ (a) _a = (a); \
-        __typeof__ (b) _b = (b); \
-        _a < _b ? _a : _b; })
+#define MAX_HSV_CHANNEL_VALUE 100.0f
 
 typedef enum
 {
@@ -350,8 +339,8 @@ void color_hex_to_hsv(char *hex, float *h, float *s, float *v)
     bs = b / MAX_COLOR_CHANNEL_VALUE;
 
     // get the max and min values
-    max_color = max(rs, max(gs, bs));
-    min_color = min(rs, min(gs, bs));
+    max_color = fmaxf((float)rs, fmaxf((float)gs, (float)bs));
+    min_color = fminf((float)rs, fminf((float)gs, (float)bs));
     delta = max_color - min_color;
 
     // calculate the HUE
@@ -363,15 +352,15 @@ void color_hex_to_hsv(char *hex, float *h, float *s, float *v)
     {
         if(max_color == rs)
         {
-            *h = fmod((60 * ((gs - bs) / delta) + 360), 360);
+            *h = fmodf((60.0f * ((gs - bs) / delta) + 360.0f), 360.0f);
         }
         if(max_color == gs)
         {
-            *h = fmod((60 * ((rs - bs) / delta) + 120), 360);
+            *h = fmodf((60.0f * ((rs - bs) / delta) + 120.0f), 360.0f);
         }
         if(max_color == bs)
         {
-            *h = fmod((60 * ((rs - gs) / delta) + 240), 360);
+            *h = fmodf((60.0f * ((rs - gs) / delta) + 240.0f), 360.0f);
         }
     }
 
@@ -446,7 +435,7 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
                     if (type == COLOR_HSV && rows > 0)
                     {
                         color_hex_to_hsv(colval, &h, &s, &v);
-                        fprintf(c_file, "{%f, %f, %f}%s\n", 
+                        fprintf(c_file, "{%ff, %ff, %ff}%s\n", 
                             h, s, v, (rows != total_rows) ? "," : "");
                     }
                 }
@@ -506,7 +495,7 @@ int csv_color_names_write(FILE *c_file, size_t total_rows, out_col_t type)
             if (type == COLOR_HSV && rows > 0)
             {
                 color_hex_to_hsv(colval, &h, &s, &v);
-                fprintf(c_file, "{%f, %f, %f}%s\n", 
+                fprintf(c_file, "{%ff, %ff, %ff}%s\n", 
                     h, s, v, (rows != total_rows) ? "," : "");
             }
         }
