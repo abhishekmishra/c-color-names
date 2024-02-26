@@ -1,4 +1,4 @@
-# C-COLOR-NAMES Documentation           {#mainpage}
+# C-COLOR-NAMES
 
 ANSI C API for the excellent collection of colors in the
 [color-names](https://github.com/meodai/color-names) package.
