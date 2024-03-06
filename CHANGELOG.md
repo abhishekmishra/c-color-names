@@ -3,7 +3,7 @@ This file documents major changes in every release of the project.
 The project follows [Semantic Versioning](https://semver.org/). There is a 
 section for each release - which lists major changes made in the release.
 
-**0.1.0-alpha.2**  2023-02-07 Abhishek Mishra  <abhishekmishra3@gmail.com>
+**0.1.0-alpha.2**  2023-03-06 Abhishek Mishra  <abhishekmishra3@gmail.com>
 
 - This is a maintenance release which bumps the version of the color-names
   library to the latest one **v10.19.0**.
