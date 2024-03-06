@@ -63,7 +63,7 @@ any changes, setup a local development environment as described in
 
 # Release Notes
 * The current release is 
-  [v0.1.0-alpha.0](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.0)
+  [v0.1.0-alpha.2](https://github.com/abhishekmishra/c-color-names/releases/tag/v0.1.0-alpha.2)
 * Release notes for all releases are at [CHANGELOG](@ref CHANGELOG.md).
 
 # License
