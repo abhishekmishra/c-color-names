@@ -19,7 +19,7 @@ endif
 all: clean build run
 
 genbuild:
-	cmake . -B ./build -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake -DCMAKE_INSTALL_PREFIX=./install
+	cmake . -B ./build -DCMAKE_INSTALL_PREFIX=./install
 
 delbuild:
 	rm -fR ./build
