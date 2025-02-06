@@ -28,13 +28,13 @@ make genbuild build run
 
 ```bash
 # get the release
-wget -c https://github.com/abhishekmishra/c-color-names/archive/refs/tags/v0.1.0-alpha.0.zip -O c-color-names.zip
+wget -c https://github.com/abhishekmishra/c-color-names/archive/refs/tags/v0.1.0-alpha.3.zip -O c-color-names.zip
 unzip c-color-names.zip
 
 # Now you can use color_names.h and color_names.c in your code.
 
 # build the test binary (optional)
-cd c-color-names-0.1.0-alpha.0
+cd c-color-names-0.1.0-alpha.3
 
 # generate the cmake build, build the code, run the test program
 make genbuild build run
